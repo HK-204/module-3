@@ -6,7 +6,8 @@ select sj.SubId, sj.SubName, sj.Status, sj.Credit from mark m
 join subject sj on m.SubId = sj.SubID
 where Mark = (select max(Mark) from mark);
 
-select s.*, avg(m.Mark) from student s
-left join mark m on s.StudentID = m.StudentId
-group by s.StudentID
-order by avg(m.Mark) desc;
+select s.*, MarkAvg.avg_mark from student s
+left join 
+(select StudentId, avg(mark.Mark) as avg_mark from mark
+group by StudentId) MarkAvg on s.StudentId = MarkAvg.StudentId
+order by MarkAvg.avg_mark desc;
